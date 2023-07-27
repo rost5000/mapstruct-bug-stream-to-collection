@@ -19,8 +19,26 @@ Assume that I want to map the `Stream<SimpleModel>` to the simple json model:
 ```
 
 I can declare a simple Mapstruct interface [SimpleMapper.java](src%2Fmain%2Fjava%2Forg%2Fexample%2FSimpleMapper.java). And declare a simple mapping method:
-`SimpleModelResponse toDto(Stream<SimpleModel> model);`. However, I receive the error in compile time:
+```java
+@Mapping(target = "model")
+SimpleModelResponse toDto(Stream<SimpleModel> model);
+```
+ However, I receive the error in compile time:
 ```
 error: Can't generate mapping method from iterable type from java stdlib to non-iterable type.
 ```
-If I declare the method `SimpleModelResponse toDto(Collection<SimpleModel> model);` then everything is fine
+If I declare the method `SimpleModelResponse toDto(Collection<SimpleModel> model);` is still producing the error.
+
+If I want return a simple json(represented by: [SimpleModelResponse1.java](src%2Fmain%2Fjava%2Forg%2Fexample%2Fdto%2FSimpleModelResponse1.java)), like this:
+```json
+{
+  "model": {
+    "name": "bla-bla"
+  }
+}
+```
+I can declare the method and everything is fine
+```java
+@Mapping(target = "model")
+SimpleModelResponse1 toDto(SimpleModel model);
+```
